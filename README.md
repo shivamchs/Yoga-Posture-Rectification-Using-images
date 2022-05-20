@@ -1,1 +1,1 @@
-# Yoga-Posture-Rectification-Using-images
+# Yoga-Posture-Detection-And-Rectification
