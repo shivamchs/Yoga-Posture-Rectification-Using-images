@@ -150,8 +150,7 @@ function Yoga1() {
                 connections.forEach((connection) => {
                   let conName = connection.toUpperCase()
                   drawSegment(ctx, [keypoint.x, keypoint.y],
-                      [keypoints[POINTS[conName]].x,
-                       keypoints[POINTS[conName]].y]
+                      [keypoints[POINTS[conName]].x,                     keypoints[POINTS[conName]].y]
                   , skeletonColor)
                 })
               } catch(err) {
@@ -176,19 +175,19 @@ function Yoga1() {
           console.log(data[0][classNo])
           setShowScore((data[0][classNo])*100)
           if(data[0][classNo] > 0.97){
-            setComplement('Well Done')
+            setComplement('Well Done 👏')
             skeletonColor = 'rgb(0,255,0)'
           } 
           else if(data[0][classNo] > 0.75){
-            setComplement('Try Harder')
+            setComplement('Try Harder 😅')
             skeletonColor = 'rgb(0,255,0)'
           }
           else if(data[0][classNo] > 0.5){
-            setComplement('Try Again')
+            setComplement('Try Again 😟')
             skeletonColor = 'rgb(255,0,0)'
           }
-          else{
-            setComplement('Wrong Pose')
+          else{ 
+            setComplement('Wrong Pose 😟')
             skeletonColor = 'rgb(255,0,0)'
           }
           if(data[0][classNo] > 0.97) {
