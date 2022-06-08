@@ -1,5 +1,5 @@
 #pose-dropdown-btn:hover {
-    border-color: white;
+    border-color: rgb(14, 6, 6);
 }
 /* #pose-dropdown-btn:active {
     background-color: white;
@@ -15,12 +15,12 @@
     justify-content: center;
 }
 #pose-dropdown-btn:focus {
-    background-color: white;
+    background-color: rgb(127, 219, 235);
     color: black;
     box-shadow: none;
 }
 #pose-dropdown-btn:focus-within {
-    border-color: white;
+    border-color: rgb(16, 6, 6);
 }
 .dropdown-option {
     background: url('../../utils/pose_images/chair.png');

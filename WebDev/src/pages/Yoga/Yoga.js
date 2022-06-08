@@ -3,13 +3,16 @@ import * as tf from '@tensorflow/tfjs';
 import React, { useRef, useState, useEffect } from 'react'
 import backend from '@tensorflow/tfjs-backend-webgl'
 import Webcam from 'react-webcam'
-import { count } from '../../utils/music'; 
+import { count } from '../../utils/music/index'; 
+import { ab1 } from '../../utils/music/ab1';
+import { ab2 } from '../../utils/music/ab2';
+import { ab3 } from '../../utils/music/ab3';
+import { ab4 } from '../../utils/music/ab4';
  
 import Instructions from '../../components/Instrctions/Instructions';
 
 import './Yoga.css';
  
-import DropDown from '../../components/DropDown/DropDown';
 import { poseImages } from '../../utils/pose_images';
 import { POINTS, keypointConnections } from '../../utils/data';
 import { drawPoint, drawSegment } from '../../utils/helper'
@@ -29,6 +32,8 @@ let interval
 // flag variable is used to help capture the time when AI just detect 
 // the pose as correct(probability more than threshold)
 let flag = false
+let s=0
+let prevs=0
 
 
 function Yoga() {
@@ -127,12 +132,16 @@ function Yoga() {
     const poseClassifier = await tf.loadLayersModel('https://models.s3.jp-tok.cloud-object-storage.appdomain.cloud/model.json')
     const countAudio = new Audio(count)
     countAudio.loop = true
+    const ab1Audio=new Audio(ab1)
+    const ab2Audio=new Audio(ab2)
+    const ab3Audio=new Audio(ab3)
+    const ab4Audio=new Audio(ab4)
     interval = setInterval(() => { 
-        detectPose(detector, poseClassifier, countAudio)
+        detectPose(detector, poseClassifier, countAudio, ab1Audio,ab2Audio,ab3Audio,ab4Audio)
     }, 100)
   }
 
-  const detectPose = async (detector, poseClassifier, countAudio) => {
+  const detectPose = async (detector, poseClassifier, countAudio,ab1Audio,ab2Audio,ab3Audio,ab4Audio) => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -183,6 +192,10 @@ function Yoga() {
             setComplement('Well Done 👏') 
             skeletonColor = 'rgb(0,255,0)'
             iteration += 1;
+            s=1;
+            if(prevs!=s){
+             ab1Audio.play()
+            }
             console.log(iteration);
             if (iteration == 30) {
              // console.log("30!")
@@ -193,31 +206,36 @@ function Yoga() {
             setComplement('Try Harder 😅')
             skeletonColor = 'rgb(0,255,0)'
             iteration=0;
+            s=2;
+            if(prevs!=s){
+              ab2Audio.play()
+             }
           }
           else if(data[0][classNo] > 0.5){
             setComplement('Try Again 😟')
             skeletonColor = 'rgb(255,0,0)'
             iteration=0;
+            s=3;
+            if(prevs!=s){
+              ab3Audio.play()
+             }
           }
           else{
             setComplement('Wrong Pose 😟')
             skeletonColor = 'rgb(255,0,0)'
             iteration=0;
+            s=4;
+            if(prevs!=s){
+              ab4Audio.play()
+             }
           }
-          if(data[0][classNo] > 0.97) {
-            
-            if(!flag) {
-              // countAudio.play()
-              // setStartingTime(new Date(Date()).getTime())
-              flag = true
-            }
-            setCurrentTime(new Date(Date()).getTime()) 
+          prevs=s;
+          if(data[0][classNo] > 0.90) {
+              countAudio.play()
             
           } else {
-            flag = false
-            skeletonColor = 'rgb(255,0,0)'
-            // countAudio.pause()
-            // countAudio.currentTime = 0
+            countAudio.pause()
+            
           }
         })
       } catch(err) {
@@ -257,12 +275,6 @@ function Yoga() {
     return (
       <div className="yoga-container">
         <div className="performance-container">
-            {/* <div className="pose-performance">
-              <h4>Pose Time: {poseTime} s</h4>
-            </div>
-            <div className="pose-performance">
-              <h4>Best: {bestPerform} s</h4>
-            </div> */}
             {showscore && <div className = "pose-performance"><h4>Score : {Math.round(showscore)} </h4></div>}
             {complement && <div className = "pose-performance"><h4><b>{complement}</b></h4></div>}
           </div>
@@ -304,7 +316,7 @@ function Yoga() {
         <button
           onClick={stopPose}
           className="secondary-btn"    
-        >Stop Pose</button>
+        >Stop</button>
       </div>
     )
   }
@@ -324,7 +336,7 @@ function Yoga() {
       <button
           onClick={startYoga}
           className="secondary-btn"    
-        >Start Pose</button>
+        >Start</button>
     </div>
   )
 }

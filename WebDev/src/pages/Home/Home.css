@@ -60,17 +60,17 @@
     padding-right: 15px;
     padding-left: 15px;
     margin: 10px 20px 10px 20px;
-    background-color: rgba(240, 203, 37, 0.746);
+    background-color:rgb(127, 219, 235);
     color: white;
     font-size: 24px;
-    border-color: #FFA500;
+    border-color: #0a0700;
     border-radius: 8px;
     border-width: 4px;
     cursor: pointer;
 }
 .btn:hover {
-    background: rgba(255,165,0, 0.2);
-    color: white;
+    background: rgba(49, 221, 230, 0.2);
+    color: rgb(16, 1, 1);
 }
 
 body::-webkit-scrollbar {
